@@ -1,19 +1,24 @@
 name: Esteira CI/CD Python baseada em GitHub Actions
 on:
-    push:
-        branches: [main]
+  push:
+    branches: [main]
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
-      - name: Setup enviroment
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt         
-      - name: Mypy 
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Mypy
         run: |
-          mypy app
+          python -m mypy app
