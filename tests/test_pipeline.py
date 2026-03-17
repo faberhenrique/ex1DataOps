@@ -36,3 +36,26 @@ def test_pipeline_raises_error_for_negative_values(tmp_path):
 
     with pytest.raises(ValueError, match="Valores negativos"):
         run_pipeline(str(input_file), str(output_file))
+
+
+def test_creates_annual_report(tmp_path):
+    input_file = tmp_path / "sales.csv"
+    output_file = tmp_path / "annual_summary.csv"
+
+    input_file.write_text(
+        "order_id,customer,amount,date\n"
+        "1,Ana,100.0,2023-01-15\n"
+        "2,Bruno,200.0,2023-02-20\n"
+        "3,Carlos,150.0,2024-03-10\n",
+        encoding="utf-8",
+    )
+
+    from app.pipeline import create_annual_report
+
+    create_annual_report(str(input_file), str(output_file))
+
+    result = pd.read_csv(output_file)
+
+    assert len(result) == 2
+    assert result.loc[result["year"] == 2023, "total_sales"].values[0] == 300.0
+    assert result.loc[result["year"] == 2024, "total_sales"].values[0] == 150.0
