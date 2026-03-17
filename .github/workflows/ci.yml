@@ -22,7 +22,17 @@ jobs:
       - name: flake8 - Linting
         run: |
           python -m flake8 app
-          
+
       - name: Pytest - Run tests
         run: |
-            python -m pytest tests    
+            python -m pytest tests   
+      - name: bandit - Security checks
+        run: |
+          python -m bandit -r app
+
+      - name: mypy - Type checking
+        run: |
+            python -m mypy app      
+      - name: randon 
+        run: |
+            python -m randon cc app -a
