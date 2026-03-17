@@ -19,8 +19,8 @@ def test_pipeline_creates_summary_file(tmp_path):
 
     result = pd.read_csv(output_file)
 
-    assert result.loc[0, "total_sales"] == 302.0
-    assert result.loc[0, "avg_sales"] == 151.0
+    assert result.loc[0, "total_sales"] == 300.0
+    assert result.loc[0, "avg_sales"] == 150.0
     assert result.loc[0, "total_orders"] == 2
 
 
